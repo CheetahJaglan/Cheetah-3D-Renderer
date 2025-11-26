@@ -5,15 +5,14 @@ from object_3d import Object3D
 
 class SoftwareRender:
     def __init__(self):
-        pygame.init()
+
         self.RES = self.WIDTH, self.HEIGHT = 1600,900
         self.H_WIDTH, self.H_HEIGHT  = self.WIDTH // 2, self.HEIGHT // 2
         self.FPS = 60
-        self.screen = pygame.display.set_mode(self.RES)
-        self.clock = pygame.time.Clock()
-        pygame.display.set_caption("3D Rendering Software | CHEETAH JAGLAN  " )
 
 
+        print("")
+        print("")
 
         print("Please enter the shape you want to render: ")
         print("1. Cube")
@@ -34,14 +33,41 @@ class SoftwareRender:
             from objects.octahedron import octa_vertices, octa_edges
             self.create_objects(octa_vertices, octa_edges)
         else:
-            print("Invalid choice.")
+            print("Invalid choice. Defaulting to Cube.")
+            from objects.cube import vertices, edges
+            self.create_objects(vertices, edges)
 
+
+        print("")
+        print("")
+
+        print("Please choose the shader mode:")
+        print("1. Wireframe")
+        print("2. Vertex")
+        print("3. Both")
+        shader_choice = input("Enter the number corresponding to your choice: ")
+        if shader_choice == '1':
+            self.shader = "wireframe"
+        elif shader_choice == '2':
+            self.shader = "vertex"
+        elif shader_choice == '3':
+            self.shader  = "both"
+        else:
+            print("Invalid choice. Defaulting to normal mode.")
+            self.shader = "both"
+
+
+
+        pygame.init()
+        self.screen = pygame.display.set_mode(self.RES)
+        self.clock = pygame.time.Clock()
+        pygame.display.set_caption("3D Rendering Software | CHEETAH JAGLAN  " )
 
 
 
     def draw(self):
         self.screen.fill((0, 0, 0))
-        self.object.draw()  
+        self.object.draw(shader=self.shader)  
         pygame.draw.rect(self.screen, (30, 30, 30), (0, self.HEIGHT-20, self.WIDTH, 20))
         pygame.draw.rect(self.screen, (255,255,255), (0, self.HEIGHT-23,self.WIDTH , 3))
         self.screen.blit(pygame.font.SysFont("arial", 15).render(f"FPS : {str(int(self.clock.get_fps()))}", True, (120, 120, 120)),(10, self.HEIGHT-18))

@@ -19,8 +19,14 @@ class Object3D:
         # cube verts (homogeneous)
 
 
-    def draw(self):
-        self.screen_projection_vertex()
+    def draw(self,shader):
+        if shader == "wireframe":
+            self.screen_projection_edges()
+        elif shader == "vertex":
+            self.screen_projection_vertex()  
+        else:
+            self.screen_projection_edges()
+            self.screen_projection_vertex()      
 
 
     # ------------------------- TRANSFORMS -------------------------
@@ -42,7 +48,7 @@ class Object3D:
 
     # ------------------------- PROJECTION + DRAW -------------------------
 
-    def screen_projection_vertex(self):
+    def screen_projection_edges(self):
         verts = self.vertices @ self.render.camera.camera_matrix()
         verts = verts @ self.render.projection.projection_matrix
         verts /= verts[:, -1].reshape(-1, 1)
@@ -68,6 +74,22 @@ class Object3D:
 
             pygame.draw.line(self.render.screen, pygame.Color('white'),
                          tuple(va), tuple(vb), 2)
+            
+    def screen_projection_vertex(self):
+        verts = self.vertices @ self.render.camera.camera_matrix()
+        verts = verts @ self.render.projection.projection_matrix
+        verts /= verts[:, -1].reshape(-1, 1)
+
+        # quick out-of-NDC clip
+        mask = (
+            (verts[:, 0] > 2) | (verts[:, 0] < -2) |
+            (verts[:, 1] > 2) | (verts[:, 1] < -2)
+        )
+        verts[mask, :2] = (self.render.H_WIDTH, self.render.H_HEIGHT)
+
+        # convert to screen coords
+        verts = verts @ self.render.projection.to_screen_matrix
+        verts = verts[:, :2]
 
         # draw vertices
         for vert in verts:
