@@ -16,7 +16,7 @@ class Camera:
         self.near_plane = 0.1
         self.far_plane = 100
         self.moving_speed = 0.01
-        self.rotation_speed = 0.01
+        self.rotation_speed = 0.002
 
         self.anglePitch = 0
         self.angleYaw = 0

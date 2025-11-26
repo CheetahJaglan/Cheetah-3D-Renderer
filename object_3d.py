@@ -1,34 +1,26 @@
 from init import np, math,pygame
 from matrix_functions import translate, rotate_x, rotate_y, rotate_z, scale
 
+
+
 import numpy as np
 
 class Object3D:
-    def __init__(self, render):
-        self.render = render
+    def __init__(self, render, object_vertices, object_edges):
+        self.render = render 
+
+        self.vertices = object_vertices.copy()
+        self.edges = object_edges.copy()
+
+        
+
+
 
         # cube verts (homogeneous)
-        self.vertices = np.array([
-            (0, 0, 0, 1),
-            (0, 1, 0, 1),
-            (1, 1, 0, 1),
-            (1, 0, 0, 1),
 
-            (0, 0, 1, 1),
-            (0, 1, 1, 1),
-            (1, 1, 1, 1),
-            (1, 0, 1, 1)
-        ], dtype=float)
-
-        # edges: pairs of vertex indices
-        self.edges = np.array([
-            (0, 1), (1, 2), (2, 3), (3, 0),  # bottom square
-            (4, 5), (5, 6), (6, 7), (7, 4),  # top square
-            (0, 4), (1, 5), (2, 6), (3, 7)   # vertical edges
-        ], dtype=int)
 
     def draw(self):
-        self.screen_projection()
+        self.screen_projection_vertex()
 
 
     # ------------------------- TRANSFORMS -------------------------
@@ -50,7 +42,7 @@ class Object3D:
 
     # ------------------------- PROJECTION + DRAW -------------------------
 
-    def screen_projection(self):
+    def screen_projection_vertex(self):
         verts = self.vertices @ self.render.camera.camera_matrix()
         verts = verts @ self.render.projection.projection_matrix
         verts /= verts[:, -1].reshape(-1, 1)
@@ -76,3 +68,13 @@ class Object3D:
 
             pygame.draw.line(self.render.screen, pygame.Color('white'),
                          tuple(va), tuple(vb), 2)
+
+        # draw vertices
+        for vert in verts:
+            if np.any(vert == self.render.H_WIDTH):
+                continue  # clipped
+            
+            pygame.draw.circle(self.render.screen, pygame.Color('red'),
+                            tuple(vert.astype(int)), 5)
+            
+        

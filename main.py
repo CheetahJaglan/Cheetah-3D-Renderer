@@ -12,7 +12,32 @@ class SoftwareRender:
         self.screen = pygame.display.set_mode(self.RES)
         self.clock = pygame.time.Clock()
         pygame.display.set_caption("3D Rendering Software | CHEETAH JAGLAN  " )
-        self.create_objects()
+
+
+
+        print("Please enter the shape you want to render: ")
+        print("1. Cube")
+        print("2. Tetrahedron")
+        print("3. Square Pyramid")
+        print("4. Octahedron")
+        shape_choice = input("Enter the number corresponding to your choice: ")
+        if shape_choice == '1':
+            from objects.cube import vertices, edges
+            self.create_objects(vertices, edges)
+        elif shape_choice == '2':
+            from objects.tetrahedron import tri_pyramid_vertices, tri_pyramid_edges
+            self.create_objects(tri_pyramid_vertices, tri_pyramid_edges)
+        elif shape_choice == '3':
+            from objects.square_pyramid import sq_pyramid_vertices, sq_pyramid_edges
+            self.create_objects(sq_pyramid_vertices, sq_pyramid_edges)
+        elif shape_choice == '4':
+            from objects.octahedron import octa_vertices, octa_edges
+            self.create_objects(octa_vertices, octa_edges)
+        else:
+            print("Invalid choice.")
+
+
+
 
     def draw(self):
         self.screen.fill((0, 0, 0))
@@ -23,10 +48,10 @@ class SoftwareRender:
 
         # Drawing logic goes here
 
-    def create_objects(self):
+    def create_objects(self, vertices, edges):
         self.camera = Camera(self, (0.5, 1, -4))
         self.projection = Projection(self)
-        self.object = Object3D(self)
+        self.object = Object3D(self, vertices, edges)
 
     def run(self):
         while True:
