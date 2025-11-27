@@ -21,20 +21,20 @@ class SoftwareRender:
         print("4. Octahedron")
         shape_choice = input("Enter the number corresponding to your choice: ")
         if shape_choice == '1':
-            from objects.cube import vertices, edges
+            from objects.cube import vertices, edges, faces
             self.create_objects(vertices, edges)
         elif shape_choice == '2':
-            from objects.tetrahedron import tri_pyramid_vertices, tri_pyramid_edges
+            from objects.tetrahedron import tri_pyramid_vertices, tri_pyramid_edges, tri_pyramid_faces
             self.create_objects(tri_pyramid_vertices, tri_pyramid_edges)
         elif shape_choice == '3':
-            from objects.square_pyramid import sq_pyramid_vertices, sq_pyramid_edges
+            from objects.square_pyramid import sq_pyramid_vertices, sq_pyramid_edges, sq_pyramid_faces
             self.create_objects(sq_pyramid_vertices, sq_pyramid_edges)
         elif shape_choice == '4':
-            from objects.octahedron import octa_vertices, octa_edges
+            from objects.octahedron import octa_vertices, octa_edges, octa_faces
             self.create_objects(octa_vertices, octa_edges)
         else:
             print("Invalid choice. Defaulting to Cube.")
-            from objects.cube import vertices, edges
+            from objects.cube import vertices, edges, faces
             self.create_objects(vertices, edges)
 
 
@@ -42,19 +42,19 @@ class SoftwareRender:
         print("")
 
         print("Please choose the shader mode:")
-        print("1. Wireframe")
+        print("1. normal")
         print("2. Vertex")
-        print("3. Both")
+        print("3. Wireframe")
         shader_choice = input("Enter the number corresponding to your choice: ")
         if shader_choice == '1':
-            self.shader = "wireframe"
+            self.shader = "normal"
         elif shader_choice == '2':
             self.shader = "vertex"
         elif shader_choice == '3':
-            self.shader  = "both"
+            self.shader  = "wireframe"
         else:
             print("Invalid choice. Defaulting to normal mode.")
-            self.shader = "both"
+            self.shader = "normal"
 
 
 

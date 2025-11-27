@@ -11,3 +11,10 @@ tri_pyramid_edges = np.array([
     (0, 1), (1, 2), (2, 0),  # base
     (0, 3), (1, 3), (2, 3)   # sides
 ], dtype=int)
+
+tri_pyramid_faces = np.array([
+    (0, 1, 2),  # base
+    (0, 1, 3),  # sides
+    (1, 2, 3),
+    (2, 0, 3)
+], dtype=int)
